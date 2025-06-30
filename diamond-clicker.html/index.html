@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #diamond-area {
+            margin-bottom: 20px;
+        }
+
+        #diamond {
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #diamond:active {
+            transform: scale(0.95);
+        }
+
+        #diamond-count {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        #shop-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .shop-item {
+            width: 150px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .shop-item:hover {
+            background-color: #eee;
+        }
+
+        .shop-item p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diamond Clicker</h1>
+
+        <div id="diamond-area">
+            <div id="diamond-count">Diamonds: <span id="diamonds">0</span></div>
+            <img id="diamond" src="https://cdn.discordapp.com/app-icons/1381321069209718924/f0724de9e257f5f992e0c8fff2e69558.png" alt="Diamond" onclick="clickDiamond()">
+        </div>
+
+        <h2>Shop</h2>
+        <div id="shop-container">
+            <div class="shop-item" onclick="buyItem('autoClicker', 10, 1)">
+                <p>Auto Clicker</p>
+                <p>Cost: 10 Diamonds</p>
+                <p>Generates: 1 Diamond/second</p>
+            </div>
+            <div class="shop-item" onclick="buyItem('multiClicker', 50, 2)">
+                <p>Multi-Clicker</p>
+                <p>Cost: 50 Diamonds</p>
+                <p>Increases click value by 2</p>
+            </div>
+            <div class="shop-item" onclick="buyItem('rubyMiner', 200, 5)">
+                <p>Ruby Miner</p>
+                <p>Cost: 200 Diamonds</p>
+                <p>Generates: 5 Diamonds/second</p>
+            </div>
+            <div class="shop-item" onclick="buyItem('diamondDrill', 500, 10)">
+                <p>Diamond Drill</p>
+                <p>Cost: 500 Diamonds</p>
+                <p>Increases click value by 10</p>
+            </div>
+            <div class="shop-item" onclick="buyItem('diamondFactory', 1000, 20)">
+                <p>Diamond Factory</p>
+                <p>Cost: 1000 Diamonds</p>
+                <p>Generates: 20 Diamonds/second</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let diamonds = 0;
+        let clickValue = 1;
+        let autoClickers = 0;
+        let rubyMiners = 0;
+        let diamondFactories = 0;
+
+        const diamondDisplay = document.getElementById('diamonds');
+
+        function clickDiamond() {
+            diamonds += clickValue;
+            updateDisplay();
+        }
+
+        function buyItem(itemType, cost, effect) {
+            if (diamonds >= cost) {
+                diamonds -= cost;
+                updateDisplay();
+
+                if (itemType === 'autoClicker') {
+                    autoClickers++;
+                    startAutoClick();
+
+                } else if (itemType === 'multiClicker') {
+                    clickValue += effect;
+                }
+                else if (itemType === 'rubyMiner') {
+                    rubyMiners++;
+                    startRubyMine();
+
+                } else if (itemType === 'diamondDrill') {
+                    clickValue += effect;
+
+                } else if (itemType === 'diamondFactory') {
+                   diamondFactories++;
+                   startDiamondFactory();
+                }
+
+            } else {
+                alert("Not enough diamonds!");
+            }
+        }
+
+
+
+        function startAutoClick() {
+            setInterval(() => {
+                diamonds += autoClickers;
+                updateDisplay();
+            }, 1000);
+        }
+
+        function startRubyMine() {
+            setInterval(() => {
+                diamonds += rubyMiners*5;
+                updateDisplay();
+            }, 1000);
+        }
+
+       function startDiamondFactory() {
+            setInterval(() => {
+                diamonds += diamondFactories*20;
+                updateDisplay();
+            }, 1000);
+        }
+
+
+        function updateDisplay() {
+            diamondDisplay.textContent = diamonds;
+        }
+
+    </script>
+</body>
+</html>
